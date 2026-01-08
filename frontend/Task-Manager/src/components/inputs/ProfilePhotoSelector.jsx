@@ -24,14 +24,14 @@ const ProfilePhotoSelector = ({ image, setImage }) => {
     inputRef.current.click();
   };
 
-//   useEffect(() => {
-//     return () => {
-//       if (prevUrl) URL.revokeObjectURL(prevUrl);
-//     };
-//   }, [prevUrl]);
+  useEffect(() => {
+    return () => {
+      if (prevUrl) URL.revokeObjectURL(prevUrl);
+    };
+  }, [prevUrl]);
 
   return (
-    <div className="flex justify-center mb-6">
+    <div className="flex justify-center mb-8">
       <input
         type="file"
         accept="image/*"
