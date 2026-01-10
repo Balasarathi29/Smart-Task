@@ -81,7 +81,7 @@ const Signup = () => {
           </div>
           {error && <p className="text-sm font-medium text-red-600 mb-3">{error}</p>}
             <button className='login-button text-white bg-primary' type="submit">SIGN UP</button>
-            <p className="text-[13px] text-slate-800 mt-3">Already an account?  
+            <p className="text-[13px] text-slate-800 mt-3">Already have an account 
             <Link className="font-medium text-primary underline" to="/login"> Login</Link></p>
         </form>
       </div>
