@@ -37,6 +37,12 @@ const Signup = () => {
       return;
     }
     setError("");
+    //api handle
+    try{
+
+    }catch(err){
+      setError("Signup failed. Please try again.");
+    }
   };
 
   return (
