@@ -51,21 +51,59 @@ const registerUser = async (req, res) => {
 };
 const loginUser = async (req, res) => {
     try{
-
+        const {email , password} = req.body;
+        const User = await user.findOne({email});
+        if(!User){
+            return res.status(400).json({message : "Invalid credentials"});
+        }
+        const isMatch = await bcrypt.compare(password, User.password);
+        if(!isMatch){
+            return res.status(400).json({message : "Invalid credentials"});
+        }
+        res.json({
+            _id : User._id,
+            name : User.name,
+            email : User.email,
+            profileImageUrl : User.profileImageUrl,
+            role : User.role,
+            token : generateToken(User._id)
+        });
     }catch(error){
         res.status(500).json({message : "Server Error" , error: error.message});
     }
 };
 const getUserProfile = async (req, res) => {
     try{
-
+        const User = await user.findById(req.user.id).select('-password');
+        if(!User){
+            return res.status(404).json({message : "User not found"});
+        }
+        res.json(User);
     }catch(error){
         res.status(500).json({message : "Server Error" , error: error.message});
     }
 };
 const updateUserProfile = async (req, res) => {
     try{
-
+        const User = await user.findById(req.user.id);
+        if(!User){
+            return res.status(404).json({message : "User not found"});
+        }
+        user.name = req.body.name || User.name;
+        user.email = req.body.email || User.email;
+        if(req.body.password){
+            const salt = await bcrypt.genSalt(10);
+            user.password = await bcrypt.hash(req.body.password , salt);
+        }
+        const updatedUser = await User.save();
+        res.json({
+            _id : updatedUser._id,
+            name : updatedUser.name,
+            email : updatedUser.email,
+            profileImageUrl : updatedUser.profileImageUrl,
+            role : updatedUser.role,
+            token : generateToken(updatedUser._id)
+        });
     }catch(error){
         res.status(500).json({message : "Server Error" , error: error.message});
     }
